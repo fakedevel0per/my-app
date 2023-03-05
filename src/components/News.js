@@ -26,7 +26,7 @@ export class News extends Component {
       page: 1,
       totalResults: 0
     }
-    document.title = `${this.capitalize(this.props.category)} - NewsMonkey`;
+    document.title = `${this.capitalize(this.props.category)} - NewsBuddie`;
   }
   async updateNews() {
     this.props.setProgress(0);
@@ -77,7 +77,7 @@ export class News extends Component {
   render() {
     return (
       <>
-        <h1 className="text-center">NewsMonkey - Top Headlines from {this.capitalize(this.props.category)}</h1>
+        <h1 className="text-center">NewsBuddie - Top Headlines from {this.capitalize(this.props.category)}</h1>
         {this.state.loading && <Spinner />}
         <InfiniteScroll
           dataLength={this.state.articles.length} //This is important field to render the next data
