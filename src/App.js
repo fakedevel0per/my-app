@@ -18,6 +18,7 @@ const App = () => {
   const apikey = process.env.REACT_APP_NEWS_API;
 
   const [progress, setProgress] = useState(10)
+  const [searchInput, setSearchInput] = useState('')
 
   const [mode, setMode] = useState('light');
   const toggleMode = ()=>{
@@ -28,7 +29,7 @@ const App = () => {
     }else{
       setMode('light');
       document.body.style.backgroundColor = 'white';
-      // showAlert("Light Mode has been enabled", "success");/
+      // showAlert("Light Mode has been enabled", "success");
     }
   }
 
@@ -51,6 +52,8 @@ const App = () => {
           <Route exact path="/science" element={<News mode={mode} setProgress={setProgress} apikey={apikey} key="science" pageSize={pageSize} country={country} category="science" />} />
           <Route exact path="/sports" element={<News mode={mode} setProgress={setProgress} apikey={apikey} key="sports" pageSize={pageSize} country={country} category="sports" />} />
           <Route exact path="/technology" element={<News mode={mode} setProgress={setProgress} apikey={apikey} key="technology" pageSize={pageSize} country={country} category="technology" />} />
+          {/* <Route exact path="/query" element={<News mode={mode} setProgress={setProgress} apikey={apikey} key="query" pageSize={pageSize} country={country} query={searchInput}/>} />/ */}
+          {/* <Route exact path="/query" element={<News mode={mode} setProgress={setProgress} apikey={apikey} key="query" pageSize={pageSize} country={country} query={searchInput}/>} /> */}
           <Route exact path="/about" element={<About/>} />
         </Routes>
       </Router>
