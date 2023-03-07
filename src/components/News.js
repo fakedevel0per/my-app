@@ -41,7 +41,6 @@ const News = (props) => {
     setPage(page + 1)
     let data = await fetch(url);
     let parsedData = await data.json();
-    console.log(parsedData);
     setArticles(articles.concat(parsedData.articles))
     setTotalResults(parsedData.totalResults)
     setLoading(false)
@@ -49,15 +48,15 @@ const News = (props) => {
 
   return (
     <>
-      <h1 className="text-center" style={{marginTop: '60px'}}>NewsBuddie - Top Headlines from {capitalize(props.category)}</h1>
-      {loading && <Spinner />}
+      <h1 className={`text-center text-${props.mode==='light'?'dark':'light'}`} style={{marginTop: '70px'}}>NewsBuddie - Top Headlines from {capitalize(props.category)}</h1>
+      {loading && <Spinner mode={props.mode}/>}
       <InfiniteScroll
         dataLength={articles.length} //This is important field to render the next data
         next={fetchData} //fetches new data
         hasMore={articles.length !== totalResults}
-        loader={<Spinner />}
+        loader={<Spinner mode={props.mode}/>}
         endMessage={
-          <p style={{ textAlign: 'center' }}>
+          <p className={`text-primary d-${loading?'none':'block'}`} d-none style={{ textAlign: 'center' }}>
             <b>Yay! You have seen it all</b>
           </p>
         }
@@ -67,7 +66,7 @@ const News = (props) => {
           <div className="row">
             {articles.map((element) => {
               return <div className="col-md-4" key={element.url}>
-                <NewsItem title={element.title ? element.title : ""} description={element.description ? element.description : ""} imageUrl={element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} source={element.source.name} />
+                <NewsItem mode={props.mode} title={element.title ? element.title : ""} description={element.description ? element.description : ""} imageUrl={element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} source={element.source.name} />
               </div>
             })}
           </div>
