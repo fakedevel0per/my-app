@@ -21,15 +21,13 @@ const App = () => {
   const [searchInput, setSearchInput] = useState('')
 
   const [mode, setMode] = useState('light');
-  const toggleMode = ()=>{
-    if (mode==='light'){
+  const toggleMode = () => {
+    if (mode === 'light') {
       setMode('dark');
       document.body.style.backgroundColor = '#041525';
-      // showAlert("Dark Mode has been enabled", "success");
-    }else{
+    } else {
       setMode('light');
       document.body.style.backgroundColor = 'white';
-      // showAlert("Light Mode has been enabled", "success");
     }
   }
 
@@ -37,7 +35,7 @@ const App = () => {
     <div>
       <Router>
 
-        <Navbar mode={mode} toggleMode={toggleMode}/>
+        <Navbar mode={mode} toggleMode={toggleMode} />
         <LoadingBar
           height={3}
           color='#f11946'
@@ -54,7 +52,7 @@ const App = () => {
           <Route exact path="/technology" element={<News mode={mode} setProgress={setProgress} apikey={apikey} key="technology" pageSize={pageSize} country={country} category="technology" />} />
           {/* <Route exact path="/query" element={<News mode={mode} setProgress={setProgress} apikey={apikey} key="query" pageSize={pageSize} country={country} query={searchInput}/>} />/ */}
           {/* <Route exact path="/query" element={<News mode={mode} setProgress={setProgress} apikey={apikey} key="query" pageSize={pageSize} country={country} query={searchInput}/>} /> */}
-          <Route exact path="/about" element={<About/>} />
+          <Route exact path="/about" element={<About />} />
         </Routes>
       </Router>
     </div>

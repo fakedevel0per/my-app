@@ -38,8 +38,7 @@ const News = (props) => {
   }, [])
 
   const fetchData = async () => {
-    // const url = `https://newsapi.org/v2/top-headlines?q=${props.query}&country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page+1}&pageSize=${props.pageSize}`;
-    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page+1}&pageSize=${props.pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page + 1}&pageSize=${props.pageSize}`;
     setPage(page + 1)
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -50,15 +49,15 @@ const News = (props) => {
 
   return (
     <>
-      <h1 className={`text-center text-${props.mode==='light'?'dark':'light'}`} style={{marginTop: '70px'}}>NewsBuddie - Top Headlines from {capitalize(props.category)}</h1>
-      {loading && <Spinner mode={props.mode}/>}
+      <h1 className={`text-center text-${props.mode === 'light' ? 'dark' : 'light'}`} style={{ marginTop: '70px' }}>NewsBuddie - Top Headlines from {capitalize(props.category)}</h1>
+      {loading && <Spinner mode={props.mode} />}
       <InfiniteScroll
         dataLength={articles.length} //This is important field to render the next data
         next={fetchData} //fetches new data
         hasMore={articles.length !== totalResults}
-        loader={<Spinner mode={props.mode}/>}
+        loader={<Spinner mode={props.mode} />}
         endMessage={
-          <p className={`text-primary d-${loading?'none':'block'}`} d-none style={{ textAlign: 'center' }}>
+          <p className={`text-primary d-${loading ? 'none' : 'block'}`} d-none style={{ textAlign: 'center' }}>
             <b>Yay! You have seen it all</b>
           </p>
         }
