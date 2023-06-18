@@ -15,9 +15,15 @@ const News = (props) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
+  let isSearch = false;
   const updateNews = async () => {
     props.setProgress(0);
-    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page}&pageSize=${props.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page}&pageSize=${props.pageSize}`;
+    if (props.search !== '') {
+      isSearch = true;
+      url = `https://newsapi.org/v2/everything?q=${props.search}&apiKey=${props.apikey}&page=${page}&pageSize=${props.pageSize}`;
+    }
+
     // const queryUrl = `https://newsapi.org/v2/everything?q=${props.query}&apiKey=${props.apikey}&page=${page}&pageSize=${props.pageSize}`;/
     setLoading(true)
     let data = await fetch(url);
@@ -34,8 +40,7 @@ const News = (props) => {
     document.title = `${capitalize(props.category)} - NewsBuddie`;
     updateNews();
     // eslint-disable-next-line
-
-  }, [])
+  }, [props.country, props.search])
 
   const fetchData = async () => {
     const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page + 1}&pageSize=${props.pageSize}`;
@@ -46,10 +51,13 @@ const News = (props) => {
     setTotalResults(parsedData.totalResults)
     setLoading(false)
   }
+  let countryCode = ['ae', 'ar', 'at', 'au', 'be', 'bg', 'br', 'ca', 'ch', 'cn', 'co', 'cu', 'cz', 'de', 'eg', 'fr', 'gb', 'gr', 'hk', 'hu', 'id', 'ie', 'il', 'in', 'it', 'jp', 'kr', 'lt', 'lv', 'ma', 'mx', 'my', 'ng', 'nl', 'no', 'nz', 'ph', 'pl', 'pt', 'ro', 'rs', 'ru', 'sa', 'se', 'sg', 'si', 'sk', 'th', 'tr', 'tw', 'ua', 'us', 've', 'za'];
+  let countryName = ['United Arab Emirates', 'Argentina', 'Austria', 'Australia', 'Belgium', 'Bulgaria', 'Brazil', 'Canada', 'Switzerland', 'China', 'Colombia', 'Cuba', 'Czechia', 'Germany', 'Egypt', 'France', 'United Kingdom', 'Greece', 'Hong Kong', 'Hungary', 'Indonesia', 'Ireland', 'Israel', 'India', 'Italy', 'Japan', 'Korea', 'Lithuania', 'Latvia', 'Morocco', 'Mexico', 'Malaysia', 'Nigeria', 'Netherlands', 'Norway', 'New Zealand', 'Philippines', 'Poland', 'Portugal', 'Romania', 'Serbia', 'Russia', 'Saudi Arabia', 'Swedan', 'Singapore', 'Slovenia', 'Slovakia', 'Thailand', 'Turkiye', 'Taiwan', 'Ukraine', 'United States', 'Venezuela', 'South Africa'];
+
 
   return (
     <>
-      <h1 className={`text-center text-${props.mode === 'light' ? 'dark' : 'light'}`} style={{ marginTop: '70px' }}>NewsBuddie - Top Headlines from {capitalize(props.category)}</h1>
+      <h1 className={`text-center text-${props.mode === 'light' ? 'dark' : 'light'}`} style={{ marginTop: '70px' }}>{props.category !== 'general' ? capitalize(props.category) : "NewsBuddie"} - Top Headlines {!isSearch && `From ${countryName[countryCode.indexOf(props.country)]}`}</h1>
       {loading && <Spinner mode={props.mode} />}
       <InfiniteScroll
         dataLength={articles.length} //This is important field to render the next data
@@ -57,7 +65,7 @@ const News = (props) => {
         hasMore={articles.length !== totalResults}
         loader={<Spinner mode={props.mode} />}
         endMessage={
-          <p className={`text-primary d-${loading ? 'none' : 'block'}`} d-none style={{ textAlign: 'center' }}>
+          <p className={`text-primary d-${loading ? 'none' : 'block'}`} style={{ textAlign: 'center' }}>
             <b>Yay! You have seen it all</b>
           </p>
         }
@@ -78,6 +86,7 @@ const News = (props) => {
 }
 
 News.defaultProps = {
+  search: '',
   country: 'in',
   pageSize: '15',
   category: 'general'

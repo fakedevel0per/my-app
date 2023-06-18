@@ -1,10 +1,30 @@
 import React, { useState } from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Navbar = (props) => {
-
+  const { setCountry } = props;
   let countryCode = ['ae', 'ar', 'at', 'au', 'be', 'bg', 'br', 'ca', 'ch', 'cn', 'co', 'cu', 'cz', 'de', 'eg', 'fr', 'gb', 'gr', 'hk', 'hu', 'id', 'ie', 'il', 'in', 'it', 'jp', 'kr', 'lt', 'lv', 'ma', 'mx', 'my', 'ng', 'nl', 'no', 'nz', 'ph', 'pl', 'pt', 'ro', 'rs', 'ru', 'sa', 'se', 'sg', 'si', 'sk', 'th', 'tr', 'tw', 'ua', 'us', 've', 'za'];
+  let countryName = ['United Arab Emirates', 'Argentina', 'Austria', 'Australia', 'Belgium', 'Bulgaria', 'Brazil', 'Canada', 'Switzerland', 'China', 'Colombia', 'Cuba', 'Czechia', 'Germany', 'Egypt', 'France', 'United Kingdom', 'Greece', 'Hong Kong', 'Hungary', 'Indonesia', 'Ireland', 'Israel', 'India', 'Italy', 'Japan', 'South Korea', 'Lithuania', 'Latvia', 'Morocco', 'Mexico', 'Malaysia', 'Nigeria', 'Netherlands', 'Norway', 'New Zealand', 'Philippines', 'Poland', 'Portugal', 'Romania', 'Serbia', 'Russia', 'Saudi Arabia', 'Swedan', 'Singapore', 'Slovenia', 'Slovakia', 'Thailand', 'Turkiye', 'Taiwan', 'Ukraine', 'United States', 'Venezuela', 'South Africa'];
 
   const [activeNav, setActiveNav] = useState("home")
+  const [searchInput, setSearchInput] = useState('')
+  let selectedCountryIndex = countryCode.indexOf(props.country);
+  function changeCountry(index) {
+    setCountry(countryCode[index]);
+  }
+
+  const countryList = countryName.map((element, index) => {
+    return <li key={index}><Link to="/" className="dropdown-item" onClick={() => changeCountry(index)}>{element}</Link></li>;
+  });
+  const navigate = useNavigate();
+  const handleSearch = (e) => {
+    e.preventDefault();
+    console.log(searchInput);
+    props.setSearch(searchInput);
+    navigate("/" + searchInput);
+  }
+  const onChange = (e) => {
+    setSearchInput(e.target.value);
+  }
 
   return (
     <div>
@@ -46,16 +66,14 @@ const Navbar = (props) => {
             </ul>
             <div className="btn-group">
               <button className={`btn btn-${props.mode === 'light' ? 'outline-white' : 'outline-secondary'} btn-sm dropdown-toggle`} type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Global
+                {countryName[selectedCountryIndex]}
               </button>
-              <ul className={`dropdown-menu ${props.mode === 'light' ? '' : 'dropdown-menu-dark'}`} id="dropdown">
-                <li><a className="dropdown-item" href="#">Action</a></li>
-                <li><a className="dropdown-item" href="#">Another action</a></li>
-                <li><a className="dropdown-item" href="#">Something else here</a></li>
+              <ul className={`dropdown-menu ${props.mode === 'light' ? '' : 'dropdown-menu-dark'}`} id="dropdown" style={{ "height": '300px', "width": 'auto', "overflow": 'hidden', "overflowY": 'scroll' }}>
+                {countryList}
               </ul>
             </div>
-            <form className="d-flex mx-3" role="search">
-              <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+            <form className="d-flex mx-3" role="search" onSubmit={handleSearch}>
+              <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" value={searchInput} onChange={onChange} />
               <button className="btn btn-outline-success" type="submit">Search</button>
             </form>
             <div className={`form-check form-switch text-${props.mode === 'light' ? 'dark' : 'light'}`}>
